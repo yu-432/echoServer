@@ -2,7 +2,8 @@
 
 int count = 0;
 
-void SendTask(Client* sock) {
+void* SendTask(void* arg) {
+  Client* sock = (Client*)arg;
   while (true) {
     std::string test =
         "hello, this is client. to server" + std::to_string(count);
@@ -12,7 +13,8 @@ void SendTask(Client* sock) {
   }
 }
 
-void RecvTask(Client* sock) {
+void* RecvTask(void* arg) {
+  Client* sock = (Client*)arg;
   while (true) {
     char buf[1024];
     sock->RecvText(buf);
@@ -22,12 +24,14 @@ void RecvTask(Client* sock) {
 
 int main(void) {
   std::cout << "Client start" << std::endl;
+  pthread_t threadSendId;
+  pthread_t threadRecvId;
   int port_server = 8080;
   const char* ip_server = "127.0.0.1";
   Client client(ip_server, port_server);
   client.Connect();
-  std::thread thread_send(SendTask, &client);
-  std::thread thread_recv(RecvTask, &client);
-  thread_send.join();
-  thread_recv.join();
+  pthread_create(&threadSendId, NULL, SendTask, &client);
+  pthread_create(&threadRecvId, NULL, RecvTask, &client);
+  pthread_join(threadSendId, NULL);
+  pthread_join(threadRecvId, NULL);
 }

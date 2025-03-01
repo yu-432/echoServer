@@ -13,7 +13,7 @@ class Client {
 
  private:
   int _socket;
-  int _sockaddr_len = sizeof(struct sockaddr_in);
+  int _sockaddr_len;
   struct sockaddr_in _addrServer;
 };
 

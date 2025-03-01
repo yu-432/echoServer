@@ -2,7 +2,8 @@
 
 int c = 0;
 
-void SendTask(Server* sock) {
+void* SendTask(void* arg) {
+  Server* sock = (Server*)arg;
   while (true) {
     std::string text = "server->client" + std::to_string(c);
     c++;
@@ -11,7 +12,8 @@ void SendTask(Server* sock) {
   }
 }
 
-void RecvTask(Server* sock) {
+void* RecvTask(void* arg) {
+  Server* sock = (Server*)arg;
   while (true) {
     char buf[1024];
     sock->RecvText(buf);
@@ -24,8 +26,10 @@ int main(void) {
   server.start();
   server.connect();
 
-  std::thread thread_send(SendTask, &server);
-  std::thread thread_recv(RecvTask, &server);
-  thread_send.join();
-  thread_recv.join();
+  pthread_t threadSendId;
+  pthread_t threadRecvId;
+  pthread_create(&threadSendId, NULL, SendTask, &server);
+  pthread_create(&threadRecvId, NULL, RecvTask, &server);
+  pthread_join(threadSendId, NULL);
+  pthread_join(threadRecvId, NULL);
 }
