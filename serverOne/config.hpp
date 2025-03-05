@@ -2,9 +2,10 @@
 #define CONFIG_HPP
 
 #include <iostream>
+#include <unistd.h>
 
 const int BUF_SIZE = 1024;
-const int PORT_SERVER = 8080;
+const int SERVER_PORT = 8080;
 const int HTTP_VERSION = 1;
 const std::string HTML_DIR = "www";
 
