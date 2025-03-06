@@ -26,7 +26,7 @@ int Socket::setSocket() {
   Socket::setListenSock();
   int optval = 1;
   //socketのオプション設定
-  if (setsockopt(_listenSocket, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) == -1) {
+  if (setsockopt(this->_listenSocket, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)) == -1) {
     std::cout << "setsockopt() failed." << std::endl;
     close(_listenSocket);
     return -1;
@@ -34,13 +34,14 @@ int Socket::setSocket() {
   //_servAddr初期化 IPアドレスやポート番号を保持している
   Socket::setSockaddrIn();
   //生成したsocketに_servAddrを割り当て通信可能状態にする
-  if (bind(_listenSocket, (struct sockaddr*)&_servAddr, sizeof(_servAddr)) == -1) {
+  if (bind(this->_listenSocket, (struct sockaddr*)&_servAddr, sizeof(_servAddr)) == -1) {
     std::cout << "bind() failed." << std::endl;
+    close(_listenSocket);
     return -1;
   }
   //ソケットを接続待ち状態にする
   //SOMAXCONN 最大接続キュー
-  if (listen(_listenSocket, SOMAXCONN) == -1) {
+  if (listen(this->_listenSocket, SOMAXCONN) == -1) {
     std::cout << "listen() failed." << std::endl;
     close(_listenSocket);
     return -1;

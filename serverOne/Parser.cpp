@@ -2,15 +2,20 @@
 
 //実行ファイルパスを元に、ディレクトリパスを取得する関数
 char* Parser::getFilename(const char* executiveFile) {
-  int length = strlen(executiveFile);
+  // int length = strlen(executiveFile);
+  (void)executiveFile;
   static char buf[BUF_SIZE];
   // sampleでは"/proc/self/exe"となっているがmacでは存在しないためgetcwdを仮に使用、失敗するかもしれない
   // readlink("/Users/yooshima/Documents/42cursus/echoServer/serverOne", buf, sizeof(buf)-1); //sample
   if (getcwd(buf, sizeof(buf)-1) == NULL)
     strcpy(buf, "./");
   int bufLength = strlen(buf);
-  for (int i = 0; i <= length; i++) {
-    buf[bufLength-i-1] = 0;
+  // for (int i = 0; i <= length; i++) {
+  //   buf[bufLength-i-1] = 0;
+  // }
+  if (buf[bufLength-1] != '/') {
+    buf[bufLength] = '/';
+    buf[bufLength+1] = '\0';
   }
   return buf;
 }

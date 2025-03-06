@@ -1,8 +1,8 @@
 #include "Response.hpp"
 
+#include <fstream>
 #include <iostream>
 #include <iterator>
-#include <fstream>
 
 #include "Header.hpp"
 #include "config.hpp"
