@@ -6,7 +6,6 @@ char* Parser::getFilename(const char* executiveFile) {
   (void)executiveFile;
   static char buf[BUF_SIZE];
   // sampleでは"/proc/self/exe"となっているがmacでは存在しないためgetcwdを仮に使用、失敗するかもしれない
-  // readlink("/Users/yooshima/Documents/42cursus/echoServer/serverOne", buf, sizeof(buf)-1); //sample
   if (getcwd(buf, sizeof(buf)-1) == NULL)
     strcpy(buf, "./");
   int bufLength = strlen(buf);

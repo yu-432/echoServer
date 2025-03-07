@@ -36,12 +36,12 @@ int http() {
         break;
       }
 
-      if (readSize == 0) {
-        std::cout << "Client closed connection" << std::endl;
-        close(accFd);
-        accFd = -1;
-        break;
-      }
+      // if (readSize == 0) {
+      //   std::cout << "Client closed connection" << std::endl;
+      //   close(accFd);
+      //   accFd = -1;
+      //   break;
+      // }
       std::cout << buf << std::endl;
 
       std::cout << "Received " << readSize << "bytes" << std::endl;
@@ -96,6 +96,7 @@ int http() {
     //
     //
     //ここが失敗しているみたい
+    std::cout <<"send prev" << accFd << serverResponse << std::endl;
     if (send(accFd, serverResponse.c_str(), serverResponse.length(), 0) == -1)
       std::cout << "write() failed" << std::endl;
 
